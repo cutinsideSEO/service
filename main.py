@@ -276,6 +276,6 @@ if __name__ == '__main__':
     try:
         from checker import checker
         print("\n--- Running Checker ---")
-        checker(airline_to_run, verbal=False)
+        checker(airline_to_run, verbose=False)
     except (ImportError, FileNotFoundError):
         print("\nCould not run checker.py automatically.")
