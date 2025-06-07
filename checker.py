@@ -232,13 +232,17 @@ def generate_solution_with_column_generation(airline_code: str):
     final_prob = pulp.LpProblem("CrewScheduling_Final", pulp.LpMinimize)
     final_slip_vars = [pulp.LpVariable(f"final_slip_{i}", cat='Binary') for i in range(len(final_master_slip_list))]
     final_prob += pulp.lpSum([cost * final_slip_vars[i] for i, (_, cost) in enumerate(final_master_slip_list)])
-    print("Applying final constraints (each flight covered AT LEAST once)...")
+    # The final solution must cover each flight exactly once.
+    print("Applying final constraints (each flight covered exactly once)...")
     for flight_id in all_flight_ids:
         covering_slips_indices = [i for i, (slip, _) in enumerate(final_master_slip_list) if flight_id in slip]
         if not covering_slips_indices:
             print(f"Error: Flight {flight_id} has no covering slips in the final pool. Solution will be infeasible.")
             continue
-        final_prob += pulp.lpSum([final_slip_vars[i] for i in covering_slips_indices]) >= 1, f"final_cover_{flight_id}"
+        final_prob += (
+            pulp.lpSum([final_slip_vars[i] for i in covering_slips_indices])
+            == 1
+        ), f"final_cover_{flight_id}"
     print("Solving final problem...")
     final_prob.solve(pulp.PULP_CBC_CMD(msg=0))
     
