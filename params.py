@@ -1,0 +1,10 @@
+minGapBetweenLegs = 25
+lengthOfHorizon = 60*24*7
+veryLongLayover = 36*60
+preFlightTime = 60
+postFlightTime = 30
+excessTime = preFlightTime + postFlightTime  # minutes to add to each slip preparation and post landing times in minutes
+maxShiftLength = 14*60  # maximum length of a shift
+maxSlipLength = 5*24*60
+timeBetweenShifts = 10*60  + preFlightTime + postFlightTime
+maxNumberOfLegs = 6
